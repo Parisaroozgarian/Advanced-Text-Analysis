@@ -1,4 +1,4 @@
-# AI Text Analyst
+# Advanced Text Analysis
 
 A modern React application for advanced text analysis with interactive visualizations. This tool provides sentiment analysis, word frequency analysis, and linguistic feature analysis with beautiful, interactive charts.
 
@@ -32,8 +32,8 @@ A modern React application for advanced text analysis with interactive visualiza
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/AI-Text-Analyst.git
-   cd AI-Text-Analyst
+   git clone https://github.com/Parisaroozgarian/Advanced-Text-Analysis.git
+   cd Advanced-Text-Analysis
    ```
 
 2. Install dependencies:
