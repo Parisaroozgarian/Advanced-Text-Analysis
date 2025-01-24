@@ -1,67 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis Results</title>
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Text Analysis Results</title>
+    
+    <!-- Preload and Performance -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+    
+    <!-- SEO and Accessibility Metadata -->
+    <meta name="description" content="Detailed text analysis results including sentiment, entities, and topics">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 </head>
+<body>
+    <div class="results-container">
+        <!-- Header Section -->
+        <header class="results-header">
+            <h1 class="title-gradient">Text Analysis Insights</h1>
+            <p class="subtitle">Comprehensive breakdown of your text</p>
+        </header>
 
+        <!-- Error Handling -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
 
-<body class="bg-gradient-to-r from-zinc-900 to-blue-900">
-    <main class="container mx-auto px-5 md:px-0 py-24">
-        <div class="relative flex flex-col items-center justify-center gap-6">
-            <h1
-                class="text-3xl text-center sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-100 via-green-500 to-green-700 drop-shadow-lg tracking-wide pb-5">
-                Analysis Results
-            </h1>
-            <div class="flex items-center justify-center absolute sm:-bottom-[2rem] sm:-right-[2rem] lg:right-[5rem] xl:right-[10rem] 2xl:right-[14rem] sm:z-50">
-                <img src="{{ url_for('static', filename='Images/robot-result.png') }}" alt="robot" class="w-[230px] lg:w-[300px] h-full flex-shrink-0">
+        <!-- Main Results Grid -->
+        <div class="analysis-grid">
+            <!-- Text Overview Section -->
+            <div class="section-card">
+                <h2 class="section-title">Text Overview</h2>
+                
+                <div class="info-card">
+                    <div class="stat-item">
+                        <h3>Total Sentences</h3>
+                        <div class="stat-value">{{ results.num_sentences }}</div>
+                    </div>
+                </div>
+
+                <!-- Sentiment Analysis Card -->
+                <div class="sentiment-card">
+                    <h3>Sentiment Distribution</h3>
+                    
+                    <!-- Sentiment Visualization -->
+                    <div class="chart-container">
+                        {{ results.sentiment_plot|safe }}
+                    </div>
+
+                    <!-- Subjectivity Meter -->
+                    {% if results.sentiment_scores.subjectivity is defined %}
+                    <div class="sentiment-details">
+                        <div class="subjectivity-meter">
+                            <span>Objectivity</span>
+                            <div class="meter">
+                                <div 
+                                    class="meter-fill" 
+                                    style="width: {{ (1 - results.sentiment_scores.subjectivity) * 100 }}%"
+                                    aria-label="Subjectivity Meter"
+                                ></div>
+                            </div>
+                            <span>Subjectivity</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-            <div class="flex flex-col gap-4 bg-gray-100/50 backdrop-blur-[4px] p-5 rounded-lg w-full sm:w-3/4 lg:w-2/4">
-                <h2 class="text-white font-bold text-2xl text-center">Analysis Overview</h2>
-                <hr>
-                <div class="flex flex-col gap-1">
-                    <h3 class="text-lg font-semibold">Number of Sentences</h3>
-                    <span>{{ results.num_sentences }}</span>
-                </div>
 
-                <div class="flex flex-col gap-1">
-                    <h3 class="text-lg font-semibold">First Sentence</h3>
-                    <span>{{ results.first_sentence }}</span>
-                </div>
-
-                <div class="flex flex-col gap-1">
-                    <h3 class="text-lg font-semibold">Sentiment Analysis</h3>
-                    <span>{{ results.sentiment_plot|safe }}</span>
-                </div>
-
-                <div class="flex flex-col gap-1">
-                    <h3 class="text-lg font-semibold">Topics</h3>
-                    <ul>
+            <!-- Advanced Analysis Section -->
+            <div class="section-card">
+                <h2 class="section-title">Key Insights</h2>
+                
+                <!-- Topics Analysis -->
+                {% if results.topics and results.topics[0][0] != 'No significant topics found' %}
+                <div class="topics-card">
+                    <h3>Main Topics</h3>
+                    <div class="topics-grid">
                         {% for topic in results.topics %}
-                        <li>{{ topic | join(', ') }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="flex flex-col gap-1">
-                    <h3 class="text-lg font-semibold">Entities</h3>
-                    <div class="entities">
-                        {% for category, items in results.entities.items() %}
-                        <h3>{{ category.capitalize() }}</h3>
-                        <ul>
-                            {% for item in items %}
-                            <li>{{ item }}</li>
-                            {% endfor %}
-                        </ul>
+                            <div class="topic-item" aria-label="Topic Cluster">
+                                {{ topic | join(' • ') }}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
+                {% endif %}
+
+                <!-- Entities Analysis -->
+                <div class="entities-card">
+                    <h3>Key Elements</h3>
+                    {% for category, items in results.entities.items() %}
+                        {% if items %}
+                        <div class="entity-category">
+                            <div class="category-header">
+                                <h4>{{ category }}</h4>
+                                {% if items|length > 4 %}
+                                    <button 
+                                        class="toggle-btn" 
+                                        onclick="toggleEntities(this)"
+                                        aria-expanded="false"
+                                    >
+                                        Show All
+                                    </button>
+                                {% endif %}
+                            </div>
+                            <div 
+                                class="entities-grid {% if items|length > 4 %}collapsed{% endif %}" 
+                                aria-live="polite"
+                            >
+                                {% for item in items %}
+                                    <div class="entity-item">{{ item }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </main>
+
+        <!-- Action Buttons -->
+        <div class="action-container">
+            <form action="{{ url_for('export_results') }}" method="POST" class="export-form">
+                <input type="hidden" name="num_sentences" value="{{ results.num_sentences }}">
+                <input type="hidden" name="neg_sentiment" value="{{ results.sentiment_scores.neg }}">
+                <input type="hidden" name="neu_sentiment" value="{{ results.sentiment_scores.neu }}">
+                <input type="hidden" name="pos_sentiment" value="{{ results.sentiment_scores.pos }}">
+                
+                <div class="action-buttons">
+                    <button 
+                        type="submit" 
+                        class="action-button export-btn hover-lift"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Export Results
+                    </button>
+                    
+                    <a 
+                        href="{{ url_for('index') }}" 
+                        class="action-button back-btn hover-lift"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        Analyze New Text
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Accessibility and Interaction Script -->
+    <script>
+        function toggleEntities(btn) {
+            const grid = btn.parentElement.nextElementSibling;
+            const isCollapsed = grid.classList.toggle('collapsed');
+            
+            // Update ARIA attributes
+            btn.setAttribute('aria-expanded', !isCollapsed);
+            
+            // Update button text
+            btn.textContent = isCollapsed ? 'Show All' : 'Show Less';
+        }
+
+        // Prevent multiple form submissions
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const submitButtons = this.querySelectorAll('button[type="submit"]');
+                submitButtons.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.add('btn-disabled');
+                    btn.innerHTML = btn.textContent + ' <span class="loading-spinner"></span>';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
