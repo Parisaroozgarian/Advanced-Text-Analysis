@@ -1,83 +1,82 @@
-# Text Analysis Application 📊
+# AI Text Analyst
 
-## Project Overview
+A modern React application for advanced text analysis with interactive visualizations. This tool provides sentiment analysis, word frequency analysis, and linguistic feature analysis with beautiful, interactive charts.
 
-The Text Analysis Application is an interactive web tool designed to perform comprehensive analysis on textual data. Users can input text directly or upload `.txt` files for analysis. The application leverages natural language processing (NLP) techniques to provide insights into sentiment, key topics, and named entities within the text, and visualizes these insights through interactive plots and word clouds.
+## Features
 
-## Key Features 🚀
+- **Sentiment Analysis**: Analyze text for positive, negative, and neutral sentiment
+- **Word Frequency Analysis**: Visualize the most common words in your text
+- **Linguistic Features**: Analyze text complexity through metrics like:
+  - Word Diversity
+  - Average Word Length
+  - Punctuation Density
+  - Unique Word Count
+- **Interactive Visualizations**:
+  - Sentiment Distribution (Pie Chart)
+  - Word Frequency (Bar Chart)
+  - Sentiment Trend (Line Chart)
+  - Linguistic Features (Radar Chart)
+- **Export Functionality**: Export analysis results in JSON format
+- **Random Text Simulation**: Test the tool with pre-defined example texts
 
-- **Text Input and File Upload**: Users can either paste text into a text area or upload a `.txt` file for analysis.
-- **Sentiment Analysis**: Evaluates the sentiment of the text and provides a visual representation of sentiment distribution (positive, neutral, negative).
-- **Topic Modeling**: Uses Latent Dirichlet Allocation (LDA) to extract and display the main topics discussed in the text.
-- **Named Entity Recognition**: Identifies and categorizes named entities such as people, locations, and organizations.
-- **Word Clouds**: Generates visual representations of significant words in the topics for an intuitive understanding of key terms.
+## Technologies Used
 
-## Libraries & Technologies 🛠️
+- React 18
+- TypeScript
+- Recharts for data visualization
+- TailwindCSS for styling
+- Lucide React for icons
+- Modern component architecture with React hooks
 
-- **Flask**: A lightweight web framework used to build and run the application server.
-- **NLTK (Natural Language Toolkit)**: Provides tools for text tokenization, sentiment analysis, and named entity recognition.
-- **Scikit-Learn**: Implements machine learning algorithms for topic modeling using TF-IDF and Latent Dirichlet Allocation (LDA).
-- **Plotly**: Generates interactive visualizations, including pie charts for sentiment analysis.
-- **WordCloud**: Creates word cloud images to visually represent frequent terms in the topics.
-- **Matplotlib**: Used for rendering and saving word cloud images.
+## Getting Started
 
-## Screenshots 📸
-
-Here are some screenshots of the application in action:
-
-- **Home Page**:
-  
-  <img width="1279" alt="Screen Shot 2024-08-22 at 12 59 06 AM" src="https://github.com/user-attachments/assets/bab01c44-621a-47b9-970d-7aab670b2f78">
-
-
-- **Analysis Results**:
-  
-  <img width="1279" alt="Screen Shot 2024-08-22 at 1 28 12 AM" src="https://github.com/user-attachments/assets/535eb7bf-dedb-412d-bb34-86cf3d388519">
-
-
-## Usage Examples 📋
-
-### Example 1: Sentiment Analysis
-
-**Input**: "I love this app! It's fantastic."
-
-**Output**: 
-- Sentiment: Positive
-- Sentiment Plot:
-  
-  <img width="480" alt="Screen Shot 2024-08-22 at 1 30 13 AM" src="https://github.com/user-attachments/assets/8c540c7a-9e01-4093-aa0c-d4aa514d80c3">
-
-
-### Example 2: Topic Modeling
-
-**Input**: "Text data is crucial for machine learning. Analyzing text can reveal patterns."
-
-**Output**:
-- Topics: 
-  1. Machine Learning, Data, Patterns
-  2. Text Analysis, Revealing, Data
-
-## Getting Started 🚀
-
-1. **Clone the Repository**:
+1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/yourusername/AI-Text-Analyst.git
+   cd AI-Text-Analyst
    ```
 
-2. **Navigate to the Project Directory**:
+2. Install dependencies:
    ```bash
-   cd <project-directory>
+   npm install
    ```
 
-3. **Install Dependencies**:
+3. Start the development server:
    ```bash
-   pip install -r requirements.txt
+   npm start
    ```
 
-4. **Run the Application**:
-   ```bash
-   python app.py
-   ```
+4. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-5. **Access the Application**:
-   Open your web browser and go to [http://localhost:5000](http://localhost:5000).
+## Usage
+
+1. Enter or paste your text in the input area
+2. Click "Analyze Text" to see the results
+3. View different aspects of the analysis through various charts
+4. Use the "Random Simulation" button to test with example texts
+5. Export results using the "Export" button
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── text-analysis/
+│   │   └── AdvancedTextAnalyzer.tsx
+│   └── ui/
+│       ├── button.tsx
+│       ├── card.tsx
+│       └── textarea.tsx
+├── lib/
+│   └── utils.ts
+├── App.tsx
+└── index.tsx
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details. 
